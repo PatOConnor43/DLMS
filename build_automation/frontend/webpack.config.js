@@ -1,7 +1,18 @@
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const webpack = require('webpack');
 
-module.exports = {
+module.exports = env => {
+    console.log(process.env.BASE_URL);
+    process.env
+    return {
+    mode: 'development',
+    devServer: {
+       contentBase: './dist',
+       headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+    },
     entry: './src/js/index.js',
     node: {
         fs: 'empty'
@@ -34,10 +45,13 @@ module.exports = {
             },
         ], {
             context: 'src/'
+        }),
+        new webpack.EnvironmentPlugin({
+            BASE_URL: JSON.stringify(process.env.BASE_URL) || ''
         })
     ],
     output: {
         filename: 'js/bundle.js',
         path: path.resolve(__dirname, 'static')
     },
-};
+}};
